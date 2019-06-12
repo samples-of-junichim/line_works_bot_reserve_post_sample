@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Lambda アップロード用バンドル作成スクリプト
+#
+# 2017/10/3 Junichi MORI
+
+# set -eu の理由
+# https://qiita.com/magicant/items/f3554274ee500bddaca8#shebang-%E3%81%AB-bash-%E3%82%92%E6%98%8E%E7%A4%BA%E3%81%97%E3%82%8D
+set -eu
+
+script_dir=$(cd $(dirname $0); pwd)
+service_root_dir=$(dirname $script_dir)
+
+function build() {
+
+    local BUNDLE=reserve_post_lambda.zip
+
+    local js_list="
+        index.js"
+
+    echo zip -r $BUNDLE ${js_list} ./node_modules/ -x "node_modules/aws-sdk/*" "node_modules/dotenv/*"
+    zip -r $BUNDLE ${js_list} ./node_modules/ -x "node_modules/aws-sdk/*" "node_modules/dotenv/*"
+}
+
+
+cd $service_root_dir
+build
+

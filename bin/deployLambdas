@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# deploy Lambds functions with zip file
+#
+# 2019/5/31, Junichi MORI
+
+fns="reservePost sendPost"
+
+if [ $# != 2 ]
+then
+    echo "Usage : deployLambds aws_profile_name zip_file_name"
+    exit 1
+fi
+
+AWS_PROFILE=$1
+zipfn=$2
+
+for fn in ${fns}
+do
+    echo aws --profile $AWS_PROFILE lambda update-function-code --function-name "${fn}" --zip-file "fileb://${zipfn}"
+    aws --profile $AWS_PROFILE lambda update-function-code --function-name "${fn}" --zip-file "fileb://${zipfn}"
+done
+
